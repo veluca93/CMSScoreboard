@@ -8,8 +8,12 @@ public class Scoreboard implements Comparable<Scoreboard> {
 
     public Scoreboard(String str) {
         String[] parts = str.split("#");
-        name = parts[1];
         URL = parts[0];
+        if (parts.length > 1) {
+            name = parts[1];
+        } else {
+            name = URL;
+        }
     }
 
     public Scoreboard(String URL, String name) {
