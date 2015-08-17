@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">CMS Scoreboard</string>
+    <string name="title_activity_scoreboard">Scoreboard</string>
+
+    <string name="action_settings">Settings</string>
+    <string-array name="drawer_extra">
+        <item>Add scoreboard</item>
+    </string-array>
+    <string-array name="scoreboard_source_options">
+        <item>Delete scoreboard</item>
+        <item>Switch to scoreboard</item>
+    </string-array>
+    <string name="drawer_open">Choose scoreboard</string>
+    <string name="drawer_close">Return to scoreboard</string>
+    <string name="url_hint">URL</string>
+    <string name="name_hint">Name</string>
+    <string name="add">Add</string>
+    <string name="title_activity_add_scoreboard">Add scoreboard</string>
+    <string name="available_scoreboards_key" translatable="false">io.github.cms-dev.cmsscoreboard.AVAILABLE_SCOREBOARDS</string>
+    <string name="current_scoreboard_key" translatable="false">io.github.cms-dev.cmsscoreboard.CURRENT_SCOREBOARD</string>
+    <string name="scoreboard_source_options_title">Scoreboard options</string>
+    <string name="scoreboard_message_non_existent">This scoreboard does not exist!</string>
+    <string name="scoreboard_message_no_network">Please enable an Internet connection.</string>
+    <string name="scoreboard_message_invalid_url">The scoreboard URL is not valid.</string>
+    <string name="scoreboard_message_invalid_data">The scoreboard sent invalid data.</string>
+    <string name="invalid_url">Invalid URL!</string>
+    <string name="name_short">Name too short!</string>
+    <string name="scoreboard_exists">You already have this scoreboard!</string>
+</resources>

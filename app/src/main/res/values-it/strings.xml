@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Classifica CMS</string>
+    <string name="title_activity_scoreboard">Classifica</string>
+    <string name="action_settings">Impostazioni</string>
+    <string-array name="drawer_extra">
+        <item>Aggiungi classifica</item>
+    </string-array>
+    <string-array name="scoreboard_source_options">
+        <item>Elimina classifica</item>
+        <item>Passa a questa classifica</item>
+    </string-array>
+    <string name="drawer_open">Scegli classifica</string>
+    <string name="drawer_close">Torna alla classifica</string>
+    <string name="url_hint">URL</string>
+    <string name="name_hint">Nome</string>
+    <string name="add">Add</string>
+    <string name="title_activity_add_scoreboard">Aggiungi classifica</string>
+    <string name="scoreboard_source_options_title">Opzioni classifica</string>
+    <string name="scoreboard_message_non_existent">Questa classifica non esiste!</string>
+    <string name="scoreboard_message_no_network">Per favore abilita una connessione a Internet.</string>
+    <string name="scoreboard_message_invalid_url">L\'URL della classifica non è valido.</string>
+    <string name="scoreboard_message_invalid_data">La classifica ha inviato dati non validi.</string>
+    <string name="invalid_url">URL non valido!</string>
+    <string name="name_short">Nome troppo corto!</string>
+    <string name="scoreboard_exists">Hai già questa classifica!</string>
+</resources>
