@@ -48,6 +48,7 @@ public class ContestantInformation implements Comparable<ContestantInformation> 
 
     @Override
     public synchronized int compareTo(@NonNull ContestantInformation another) {
-        return another.getTotalScore().compareTo(getTotalScore());
+        int res = another.getTotalScore().compareTo(getTotalScore());
+        return res == 0 ? lastName.compareTo(another.lastName) : res;
     }
 }

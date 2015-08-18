@@ -60,9 +60,9 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             if (maxScore != null) {
                 score.setTextColor(Color.argb(
                         255,
-                        (int) (255 - (255 * roundedScore / maxScore)),
-                        (int) (255 * roundedScore / maxScore),
-                        128));
+                        (int) (200 - (200 * roundedScore / maxScore)),
+                        (int) (200 * roundedScore / maxScore),
+                        0));
             }
             return convertView;
         }
