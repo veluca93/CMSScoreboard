@@ -45,6 +45,10 @@ public class ScoreboardManager implements SharedPreferences.OnSharedPreferenceCh
         currentScoreboard = scoreboard;
     }
 
+    public int getSavedScoreboardsNum() {
+        return prefs.getStringSet(ctx.getString(R.string.available_scoreboards_key), new HashSet<String>()).size();
+    }
+
     public Set<Scoreboard> getAvailableScoreboards() {
         return scoreboards;
     }

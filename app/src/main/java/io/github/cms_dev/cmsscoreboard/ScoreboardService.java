@@ -24,6 +24,12 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
                 new Thread(updater).start();
             }
         }
+        for (Scoreboard scoreboard: scoreboards.keySet()) {
+            if (!scoreboardManager.scoreboardExists(scoreboard)) {
+                scoreboards.get(scoreboard).terminate();
+                scoreboards.remove(scoreboard);
+            }
+        }
     }
 
     private void stopUpdaters() {

@@ -154,13 +154,13 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     }
 
     private void populateScoreboardList() {
-        scoreboards.clear();
-        scoreboards.addAll(scoreboardManager.getAvailableScoreboards());
-        Collections.sort(scoreboards);
-        if (scoreboards.size() == 0) {
+        if (scoreboardManager.getSavedScoreboardsNum() == 0) {
             Intent intent = new Intent(this, AddScoreboardActivity.class);
             startActivity(intent);
         } else {
+            scoreboards.clear();
+            scoreboards.addAll(scoreboardManager.getAvailableScoreboards());
+            Collections.sort(scoreboards);
             scoreboardAdapter.notifyDataSetChanged();
         }
     }
