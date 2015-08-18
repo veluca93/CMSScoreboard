@@ -15,7 +15,7 @@
     <string name="url_hint">URL</string>
     <string name="name_hint">Name</string>
     <string name="add">Add</string>
-    <string name="title_activity_add_scoreboard">Add scoreboard</string>
+    <string name="title_add_scoreboard">Add scoreboard</string>
     <string name="available_scoreboards_key" translatable="false">io.github.cms-dev.cmsscoreboard.AVAILABLE_SCOREBOARDS</string>
     <string name="current_scoreboard_key" translatable="false">io.github.cms-dev.cmsscoreboard.CURRENT_SCOREBOARD</string>
     <string name="scoreboard_source_options_title">Scoreboard options</string>
@@ -26,4 +26,5 @@
     <string name="invalid_url">Invalid URL!</string>
     <string name="name_short">Name too short!</string>
     <string name="scoreboard_exists">You already have this scoreboard!</string>
+    <string name="cancel">Cancel</string>
 </resources>

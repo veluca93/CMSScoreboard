@@ -28,8 +28,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="20sp"
+            android:id="@+id/scoreboard_error"
             android:visibility="gone"
-            android:id="@+id/scoreboard_error"/>
+            android:padding="10dp"/>
         <ListView
             android:id="@+id/contestants"
             android:layout_width="fill_parent"

@@ -1,6 +1,8 @@
 package io.github.cms_dev.cmsscoreboard;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,12 +20,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -153,10 +157,48 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         }
     }
 
+    private void showAddScoreboardDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_add_scoreboard);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_scoreboard_dialog, null);
+        builder.setPositiveButton(R.string.add, null);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setView(dialogView);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText mName = (EditText) dialogView.findViewById(R.id.insert_name);
+                EditText mURL = (EditText) dialogView.findViewById(R.id.insert_url);
+                String name = mName.getText().toString();
+                String URL = mURL.getText().toString();
+                boolean valid = true;
+                if (!Patterns.WEB_URL.matcher(URL).matches()) {
+                    mURL.setError(getString(R.string.invalid_url));
+                    valid = false;
+                }
+                if (name.length() < 3) {
+                    mName.setError(getString(R.string.name_short));
+                    valid = false;
+                }
+                Scoreboard newScoreboard = new Scoreboard(URL, name);
+                if (valid && scoreboardManager.scoreboardExists(newScoreboard)) {
+                    mURL.setError(getString(R.string.scoreboard_exists));
+                    valid = false;
+                }
+                if (!valid) return;
+                scoreboardManager.addAvailableScoreboard(newScoreboard);
+                scoreboardManager.setCurrentScoreboard(newScoreboard);
+                scoreboardManager.apply();
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void populateScoreboardList() {
         if (scoreboardManager.getSavedScoreboardsNum() == 0) {
-            Intent intent = new Intent(this, AddScoreboardActivity.class);
-            startActivity(intent);
+            showAddScoreboardDialog();
         } else {
             scoreboards.clear();
             scoreboards.addAll(scoreboardManager.getAvailableScoreboards());
@@ -214,8 +256,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    Intent intent = new Intent(ScoreboardActivity.this, AddScoreboardActivity.class);
-                    startActivity(intent);
+                    showAddScoreboardDialog();
                 }
             }
         });
