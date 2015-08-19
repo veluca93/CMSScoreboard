@@ -25,4 +25,6 @@
     <string name="name_short">Nome troppo corto!</string>
     <string name="scoreboard_exists">Hai già questa classifica!</string>
     <string name="cancel">Cancella</string>
+    <string name="scan_qr">Scansione codice QR</string>
+    <string name="invalid_scan">Non hai scansionato una classifica valida!</string>
 </resources>
