@@ -16,7 +16,7 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
     private ScoreboardManager scoreboardManager;
     private final ScoreboardBinder binder = new ScoreboardBinder();
 
-    private void startUpdaters() {
+    private synchronized void startUpdaters() {
         for (Scoreboard scoreboard: scoreboardManager.getAvailableScoreboards()) {
             if (!scoreboards.containsKey(scoreboard)) {
                 ScoreboardUpdater updater = new ScoreboardUpdater(this, scoreboard);
@@ -32,7 +32,7 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
         }
     }
 
-    private void stopUpdaters() {
+    private synchronized void stopUpdaters() {
         for (ScoreboardUpdater updater: scoreboards.values()) {
             updater.terminate();
         }
@@ -40,14 +40,18 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
 
     public class ScoreboardBinder extends Binder {
         public List<ContestantInformation> getScores(Scoreboard scoreboard) throws ScoreboardNotReadyException {
-            if (!scoreboards.containsKey(scoreboard))
-                throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
-            return scoreboards.get(scoreboard).getScores();
+            synchronized (ScoreboardService.this) {
+                if (!scoreboards.containsKey(scoreboard))
+                    throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
+                return scoreboards.get(scoreboard).getScores();
+            }
         }
         public Double getMaxScore(Scoreboard scoreboard) throws ScoreboardNotReadyException {
-            if (!scoreboards.containsKey(scoreboard))
-                throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
-            return scoreboards.get(scoreboard).getMaxScore();
+            synchronized (ScoreboardService.this) {
+                if (!scoreboards.containsKey(scoreboard))
+                    throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
+                return scoreboards.get(scoreboard).getMaxScore();
+            }
         }
     }
 
