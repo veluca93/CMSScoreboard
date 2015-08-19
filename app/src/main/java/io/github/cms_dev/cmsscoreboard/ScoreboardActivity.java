@@ -183,13 +183,20 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         });
         if (scoreboardManager.getSavedScoreboardsNum() > 0)
             builder.setNegativeButton(R.string.cancel, null);
-        else
+        else {
             builder.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
                 }
             });
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    finish();
+                }
+            });
+        }
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
         dialog.show();
