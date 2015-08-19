@@ -1,8 +1,6 @@
 package io.github.cms_dev.cmsscoreboard;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +19,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -133,6 +130,9 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                         messageId = R.string.scoreboard_message_non_existent;
                         break;
                 }
+                if (scoreboardManager.getSavedScoreboardsNum() == 0) {
+                    messageId = R.string.scoreboard_message_no_scoreboards;
+                }
                 mContestantsList.setVisibility(View.GONE);
                 mContestantsLoading.setVisibility(View.GONE);
                 mErrorText.setVisibility(View.VISIBLE);
@@ -230,13 +230,12 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     }
 
     private void populateScoreboardList() {
+        scoreboards.clear();
+        scoreboards.addAll(scoreboardManager.getAvailableScoreboards());
+        Collections.sort(scoreboards);
+        scoreboardAdapter.notifyDataSetChanged();
         if (scoreboardManager.getSavedScoreboardsNum() == 0) {
             showAddScoreboardDialog();
-        } else {
-            scoreboards.clear();
-            scoreboards.addAll(scoreboardManager.getAvailableScoreboards());
-            Collections.sort(scoreboards);
-            scoreboardAdapter.notifyDataSetChanged();
         }
     }
 
@@ -374,7 +373,6 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String[] scanResult = data.getStringExtra("SCAN_RESULT").split("#");
-                Log.v("qr", scanResult[0]);
                 if (scanResult.length != 2 || !Patterns.WEB_URL.matcher(scanResult[0]).matches() || scanResult[1].length() < 3) {
                     Toast.makeText(this, R.string.invalid_scan, Toast.LENGTH_LONG).show();
                     return;

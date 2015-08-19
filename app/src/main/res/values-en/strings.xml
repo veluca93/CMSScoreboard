@@ -28,4 +28,5 @@
     <string name="scan_qr">QR Code</string>
     <string name="invalid_scan">You did not scan a valid scoreboard!</string>
     <string name="exit">Exit</string>
+    <string name="scoreboard_message_no_scoreboards">No scoreboards found.</string>
 </resources>
