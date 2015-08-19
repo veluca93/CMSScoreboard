@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class ScoreboardService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -16,38 +17,46 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
     private ScoreboardManager scoreboardManager;
     private final ScoreboardBinder binder = new ScoreboardBinder();
 
-    private synchronized void startUpdaters() {
-        for (Scoreboard scoreboard: scoreboardManager.getAvailableScoreboards()) {
-            if (!scoreboards.containsKey(scoreboard)) {
-                ScoreboardUpdater updater = new ScoreboardUpdater(this, scoreboard);
-                scoreboards.put(scoreboard, updater);
-                new Thread(updater).start();
+    private void startUpdaters() {
+        synchronized (scoreboards) {
+            for (Scoreboard scoreboard : scoreboardManager.getAvailableScoreboards()) {
+                if (!scoreboards.containsKey(scoreboard)) {
+                    ScoreboardUpdater updater = new ScoreboardUpdater(this, scoreboard);
+                    scoreboards.put(scoreboard, updater);
+                    new Thread(updater).start();
+                }
             }
-        }
-        for (Scoreboard scoreboard: scoreboards.keySet()) {
-            if (!scoreboardManager.scoreboardExists(scoreboard)) {
+            HashSet<Scoreboard> scoreboardsToDelete = new HashSet<>();
+            for (Scoreboard scoreboard: scoreboards.keySet()) {
+                if (!scoreboardManager.scoreboardExists(scoreboard)) {
+                    scoreboardsToDelete.add(scoreboard);
+                }
+            }
+            for (Scoreboard scoreboard: scoreboardsToDelete) {
                 scoreboards.get(scoreboard).terminate();
                 scoreboards.remove(scoreboard);
             }
         }
     }
 
-    private synchronized void stopUpdaters() {
-        for (ScoreboardUpdater updater: scoreboards.values()) {
-            updater.terminate();
+    private void stopUpdaters() {
+        synchronized (scoreboards) {
+            for (ScoreboardUpdater updater : scoreboards.values()) {
+                updater.terminate();
+            }
         }
     }
 
     public class ScoreboardBinder extends Binder {
         public List<ContestantInformation> getScores(Scoreboard scoreboard) throws ScoreboardNotReadyException {
-            synchronized (ScoreboardService.this) {
+            synchronized (scoreboards) {
                 if (!scoreboards.containsKey(scoreboard))
                     throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
                 return scoreboards.get(scoreboard).getScores();
             }
         }
         public Double getMaxScore(Scoreboard scoreboard) throws ScoreboardNotReadyException {
-            synchronized (ScoreboardService.this) {
+            synchronized (scoreboards) {
                 if (!scoreboards.containsKey(scoreboard))
                     throw new ScoreboardNotReadyException("Scoreboard does not exist!", ScoreboardStatus.NON_EXISTENT);
                 return scoreboards.get(scoreboard).getMaxScore();

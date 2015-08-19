@@ -21,7 +21,7 @@ public class ScoreboardManager implements SharedPreferences.OnSharedPreferenceCh
         onSharedPreferenceChanged(prefs, ctx.getString(R.string.current_scoreboard_key));
     }
 
-    public void apply() {
+    public synchronized void apply() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(ctx.getString(R.string.current_scoreboard_key), currentScoreboard.saveAsString());
         HashSet<String> newSet = new HashSet<>();
@@ -37,11 +37,11 @@ public class ScoreboardManager implements SharedPreferences.OnSharedPreferenceCh
         return prefs;
     }
 
-    public Scoreboard getCurrentScoreboard() {
+    public synchronized Scoreboard getCurrentScoreboard() {
         return currentScoreboard;
     }
 
-    public void setCurrentScoreboard(Scoreboard scoreboard) {
+    public synchronized void setCurrentScoreboard(Scoreboard scoreboard) {
         currentScoreboard = scoreboard;
     }
 
@@ -49,22 +49,22 @@ public class ScoreboardManager implements SharedPreferences.OnSharedPreferenceCh
         return prefs.getStringSet(ctx.getString(R.string.available_scoreboards_key), new HashSet<String>()).size();
     }
 
-    public Set<Scoreboard> getAvailableScoreboards() {
+    public synchronized Set<Scoreboard> getAvailableScoreboards() {
         return scoreboards;
     }
 
-    public void addAvailableScoreboard(Scoreboard scoreboard) {
+    public synchronized void addAvailableScoreboard(Scoreboard scoreboard) {
         scoreboards.add(scoreboard);
     }
 
-    public void delAvailableScoreboard(Scoreboard scoreboard) {
+    public synchronized void delAvailableScoreboard(Scoreboard scoreboard) {
         scoreboards.remove(scoreboard);
         if (scoreboard.equals(currentScoreboard) && !scoreboards.isEmpty()) {
             currentScoreboard = scoreboards.iterator().next();
         }
     }
 
-    public boolean scoreboardExists(Scoreboard scoreboard) {
+    public synchronized boolean scoreboardExists(Scoreboard scoreboard) {
         return scoreboards.contains(scoreboard);
     }
 

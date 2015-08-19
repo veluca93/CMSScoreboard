@@ -348,12 +348,6 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        populateScoreboardList();
-    }
-
-    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         scoreboardManager.onSharedPreferenceChanged(sharedPreferences, key);
         if (key.equals(getString(R.string.current_scoreboard_key))) {
