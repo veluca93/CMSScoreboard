@@ -275,7 +275,7 @@ public class ScoreboardUpdater implements Runnable {
             while (!terminating) {
                 maintainBoard();
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(120000);
                 } catch (InterruptedException e) {
                     break;
                 }
