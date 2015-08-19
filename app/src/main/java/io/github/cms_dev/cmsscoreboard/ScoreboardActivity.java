@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import java.util.List;
 
 public class ScoreboardActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, ServiceConnection {
     private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
     private ListView mScoreboardList;
     private ListView mContestantsList;
     private ProgressBar mContestantsLoading;
@@ -181,22 +183,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                 }
             }
         });
-        if (scoreboardManager.getSavedScoreboardsNum() > 0)
-            builder.setNegativeButton(R.string.cancel, null);
-        else {
-            builder.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    finish();
-                }
-            });
-        }
+        builder.setNegativeButton(R.string.cancel, null);
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -235,7 +222,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         Collections.sort(scoreboards);
         scoreboardAdapter.notifyDataSetChanged();
         if (scoreboardManager.getSavedScoreboardsNum() == 0) {
-            showAddScoreboardDialog();
+            mDrawerLayout.openDrawer(Gravity.LEFT);
         }
     }
 
@@ -268,8 +255,8 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
         }
 
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView mExtraList = (ListView) findViewById(R.id.drawer_extra);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mScoreboardList = (ListView) findViewById(R.id.scoreboards);
         mContestantsList = (ListView) findViewById(R.id.contestants);
         mContestantsLoading = (ProgressBar) findViewById(R.id.scoreboard_loading_spinner);
