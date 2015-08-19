@@ -27,6 +27,7 @@
     <string name="name_short">Name too short!</string>
     <string name="scoreboard_exists">You already have this scoreboard!</string>
     <string name="cancel">Cancel</string>
-    <string name="scan_qr">Scan QR code</string>
     <string name="invalid_scan">You did not scan a valid scoreboard!</string>
+    <string name="exit">Exit</string>
+    <string name="scan_qr">QR Code</string>
 </resources>

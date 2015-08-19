@@ -176,12 +176,20 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                     startActivityForResult(intent, 0);
                 } catch (Exception e) {
                     Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
-                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
                     startActivity(marketIntent);
                 }
             }
         });
-        builder.setNegativeButton(R.string.cancel, null);
+        if (scoreboardManager.getSavedScoreboardsNum() > 0)
+            builder.setNegativeButton(R.string.cancel, null);
+        else
+            builder.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
         dialog.show();
