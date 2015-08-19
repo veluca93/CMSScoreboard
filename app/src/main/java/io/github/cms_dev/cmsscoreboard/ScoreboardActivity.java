@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,6 +21,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -163,6 +166,21 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.add_scoreboard_dialog, null);
         builder.setPositiveButton(R.string.add, null);
+        builder.setNeutralButton(R.string.scan_qr, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+                    startActivityForResult(intent, 0);
+                } catch (Exception e) {
+                    Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+                    startActivity(marketIntent);
+                }
+            }
+        });
         builder.setNegativeButton(R.string.cancel, null);
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
@@ -338,6 +356,29 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             new ScoreboardUpdateTask().execute(scoreboardManager.getCurrentScoreboard());
         } else if (key.equals(getString(R.string.available_scoreboards_key))) {
             populateScoreboardList();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String[] scanResult = data.getStringExtra("SCAN_RESULT").split("#");
+                Log.v("qr", scanResult[0]);
+                if (scanResult.length != 2 || !Patterns.WEB_URL.matcher(scanResult[0]).matches() || scanResult[1].length() < 3) {
+                    Toast.makeText(this, R.string.invalid_scan, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Scoreboard newScoreboard = new Scoreboard(scanResult[0], scanResult[1]);
+                if (scoreboardManager.scoreboardExists(newScoreboard)) {
+                    Toast.makeText(this, R.string.scoreboard_exists, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                scoreboardManager.addAvailableScoreboard(newScoreboard);
+                scoreboardManager.setCurrentScoreboard(newScoreboard);
+                scoreboardManager.apply();
+            }
         }
     }
 }
