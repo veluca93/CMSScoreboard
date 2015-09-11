@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,13 +30,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class ScoreboardActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, ServiceConnection {
@@ -51,17 +58,28 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     private ContestantAdapter contestantAdapter;
     private List<Scoreboard> scoreboards = new ArrayList<>();
     private ScoreboardAdapter scoreboardAdapter;
+    public HashMap<String,Boolean> mContestantOpen = new HashMap<>();
+    public HashMap<String,Boolean> mContestantFav = new HashMap<>();
 
     private class ContestantAdapter extends ArrayAdapter<ContestantInformation> {
+
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.scoreboard_item, parent, false);
             }
+            final String contestantName = scoreboardData.get(position).getFullName() ;
+            long roundedScore = Math.round(scoreboardData.get(position).getTotalScore());
             TextView name = (TextView) convertView.findViewById(R.id.contestant_name);
             TextView score = (TextView) convertView.findViewById(R.id.contestant_score);
-            name.setText(scoreboardData.get(position).getFullName());
-            long roundedScore = Math.round(scoreboardData.get(position).getTotalScore());
+            LinearLayout taskN = (LinearLayout) convertView.findViewById(R.id.contestant_task_name);
+            LinearLayout taskS = (LinearLayout) convertView.findViewById(R.id.contestant_task_score);
+            LinearLayout info = (LinearLayout) convertView.findViewById(R.id.contestant_info);
+            ImageView star = (ImageView) convertView.findViewById(R.id.contestant_star);
+            ImageView flag = (ImageView) convertView.findViewById(R.id.contestant_flag);
+
+            name.setText(contestantName);
             score.setText(Long.toString(roundedScore));
             if (maxScore != null) {
                 score.setTextColor(Color.argb(
@@ -70,6 +88,73 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                         (int) (200 * roundedScore / maxScore),
                         0));
             }
+
+
+            int i = 0 ;
+            if( taskN.getChildCount() == 1 ) {
+                for (String taskKey : scoreboardData.get(position).scores.keySet()) {
+                    if (i++ > 3) break;
+                    TextView nameTask = new TextView(this.getContext());
+                    TextView scoreTask = new TextView(this.getContext());
+
+                    double scoreD = Double.parseDouble(scoreboardData.get(position).scores.get(taskKey).toString());
+                    nameTask.setText(taskKey);
+                    scoreTask.setText((new Integer((int) Math.round(scoreD))).toString());
+
+                    taskN.addView(nameTask);
+                    taskS.addView(scoreTask);
+                }
+            }
+
+
+            if( mContestantFav.get(contestantName) != null && mContestantFav.get(contestantName).booleanValue() ){
+                star.setImageResource(R.drawable.ic_star_black_48dp);
+            }
+
+            if( mContestantOpen.get(contestantName) == null || !mContestantOpen.get(contestantName).booleanValue() ){
+                mContestantOpen.put(contestantName,new Boolean(false));
+                info.setVisibility(View.GONE);
+            }
+            else {
+                mContestantOpen.put(contestantName,new Boolean(true));
+                info.setVisibility(View.VISIBLE);
+            }
+
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView viewImg = (ImageView) view ;
+                    TextView name = (TextView) ( (LinearLayout)view.getParent()).findViewById(R.id.contestant_name);
+                    if( mContestantFav.get(contestantName) == null || !mContestantFav.get(contestantName).booleanValue() ){
+                        mContestantFav.put(contestantName,new Boolean(true));
+                        viewImg.setImageResource(R.drawable.ic_star_black_48dp);
+                    }
+                    else {
+                        mContestantFav.put(contestantName,new Boolean(false));
+                        viewImg.setImageResource(R.drawable.ic_star_border_black_48dp);
+                    }
+                    return ;
+
+                }
+            });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LinearLayout info = (LinearLayout) view.findViewById(R.id.contestant_info);
+                    TextView name = (TextView) view.findViewById(R.id.contestant_name);
+                    String contestantName = name.getText().toString();
+                    if( mContestantOpen.get(contestantName) == null || !mContestantOpen.get(contestantName).booleanValue() ){
+                        mContestantOpen.put(contestantName,new Boolean(true));
+                        info.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        mContestantOpen.put(contestantName,new Boolean(false));
+                        info.setVisibility(View.GONE);
+                    }
+                 //   name.setText("IMPOSTO " + contestantName + " " + mContestantOpen.get(contestantName).booleanValue());
+                }
+            });
+
             return convertView;
         }
         public ContestantAdapter(Context context) {

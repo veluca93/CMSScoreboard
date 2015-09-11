@@ -7,7 +7,7 @@ import javax.json.JsonObject;
 import java.util.HashMap;
 
 public class ContestantInformation implements Comparable<ContestantInformation> {
-    private HashMap<String, Double> scores;
+    public HashMap<String, Double> scores;
     public String firstName;
     public String lastName;
     public String username;

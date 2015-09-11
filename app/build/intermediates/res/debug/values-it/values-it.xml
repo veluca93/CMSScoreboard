@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
+    <eat-comment/>
+    <string-array name="drawer_extra">
+        <item>Aggiungi classifica</item>
+    </string-array>
+    <string-array name="scoreboard_source_options">
+        <item>Elimina classifica</item>
+        <item>Passa a questa classifica</item>
+    </string-array>
+    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values-it/values-it.xml -->
+    <eat-comment/>
+    <string msgid="4600421777120114993" name="abc_action_bar_home_description">"Vai alla home page"</string>
+    <string msgid="1594238315039666878" name="abc_action_bar_up_description">"Vai in alto"</string>
+    <string msgid="3588849162933574182" name="abc_action_menu_overflow_description">"Altre opzioni"</string>
+    <string msgid="4076576682505996667" name="abc_action_mode_done">"Fine"</string>
+    <string msgid="7468859129482906941" name="abc_activity_chooser_view_see_all">"Visualizza tutte"</string>
+    <string msgid="2031811694353399454" name="abc_activitychooserview_choose_application">"Scegli un\'applicazione"</string>
+    <string msgid="3691816814315814921" name="abc_searchview_description_clear">"Cancella query"</string>
+    <string msgid="2550479030709304392" name="abc_searchview_description_query">"Query di ricerca"</string>
+    <string msgid="8264924765203268293" name="abc_searchview_description_search">"Cerca"</string>
+    <string msgid="8928215447528550784" name="abc_searchview_description_submit">"Invia query"</string>
+    <string msgid="893419373245838918" name="abc_searchview_description_voice">"Ricerca vocale"</string>
+    <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"Condividi con"</string>
+    <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"Condividi con %s"</string>
+    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
+    <eat-comment/>
+    <string name="action_settings">Impostazioni</string>
+    <string name="add">Add</string>
+    <string name="app_name">Classifica CMS</string>
+    <string name="cancel">Cancella</string>
+    <string name="drawer_close">Torna alla classifica</string>
+    <string name="drawer_open">Scegli classifica</string>
+    <string name="exit">Esci</string>
+    <string name="invalid_scan">Non hai scansionato una classifica valida!</string>
+    <string name="invalid_url">URL non valido!</string>
+    <string name="name_hint">Nome</string>
+    <string name="name_short">Nome troppo corto!</string>
+    <string name="scan_qr">Codice QR</string>
+    <string name="scoreboard_exists">Hai già questa classifica!</string>
+    <string name="scoreboard_message_invalid_data">La classifica ha inviato dati non validi.</string>
+    <string name="scoreboard_message_invalid_url">L\'URL della classifica non è valido.</string>
+    <string name="scoreboard_message_no_network">Per favore abilita una connessione a Internet.</string>
+    <string name="scoreboard_message_no_scoreboards">Nessuna classifica trovata.</string>
+    <string name="scoreboard_message_non_existent">Questa classifica non esiste!</string>
+    <string name="scoreboard_source_options_title">Opzioni classifica</string>
+    <string name="title_activity_scoreboard">Classifica</string>
+    <string name="title_add_scoreboard">Aggiungi classifica</string>
+    <string name="url_hint">URL</string>
+</resources>

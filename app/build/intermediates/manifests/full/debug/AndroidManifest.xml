@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.cms_dev.cmsscoreboard"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/cms"
+        android:label="@string/app_name"
+        android:logo="@mipmap/cms"
+        android:theme="@style/Theme.CMSTheme" >
+        <service android:name="io.github.cms_dev.cmsscoreboard.ScoreboardService" />
+
+        <activity
+            android:name="io.github.cms_dev.cmsscoreboard.ScoreboardActivity"
+            android:label="@string/title_activity_scoreboard" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
