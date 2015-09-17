@@ -1,6 +1,8 @@
 package io.github.cms_dev.cmsscoreboard;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,14 +10,17 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.Image;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -64,9 +69,8 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     private List<Scoreboard> scoreboards = new ArrayList<>();
     private ScoreboardAdapter scoreboardAdapter;
     public HashMap<String,Boolean> mContestantOpen = new HashMap<>();
-    public HashMap<String,Boolean> mContestantFav = new HashMap<>();
     public HashSet<String> mContestantFavouriteList = new HashSet<String>();
-
+    public static Context mContext = null ;
     private class ContestantAdapter extends ArrayAdapter<ContestantInformation> {
 
 
@@ -107,17 +111,17 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             scoreTask.setBackgroundColor(Color.parseColor("#cccccc"));
             taskN.addView(nameTask);
             taskS.addView(scoreTask);
-            for (String taskKey : scoreboardData.get(position).scores.keySet())
+
+            for ( TaskInformation taskKey : scoreboardData.get(position).scoreboard.task )
             {
                 nameTask = new TextView(this.getContext());
                 scoreTask = new TextView(this.getContext());
-                double scoreD = Double.parseDouble(scoreboardData.get(position).scores.get(taskKey).toString());
-                nameTask.setText(taskKey);
+                double scoreD = scoreboardData.get(position).getScore(taskKey.short_name) ;
+                nameTask.setText(taskKey.short_name);
                 scoreTask.setText((Integer.valueOf((int) Math.round(scoreD))).toString());
                 taskN.addView(nameTask);
                 taskS.addView(scoreTask);
             }
-
 
             //if( ScoreboardActivity.this.getPreferences(Context.MODE_PRIVATE).getString(contestantName, "DEFAULT") )
             if( PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).contains(contestantName) && PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).getString(contestantName, null).equals("OK") ){
@@ -143,9 +147,10 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     ImageView viewImg = (ImageView) view ;
                     TextView name = (TextView) ( (LinearLayout)view.getParent()).findViewById(R.id.contestant_name);
-                    //Log.d("ScoreBoard CMS", "[" + scoreboardManager.getCurrentScoreboard().URL + "] [" + name.getText() + "]");
+
                     String res = "OK" ;
                     if( !PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).contains(name.getText().toString()) || !PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).getString(contestantName, null).equals("OK") ){
                         mContestantFavouriteList.add(name.getText().toString());
@@ -208,6 +213,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         protected List<ContestantInformation> doInBackground(Scoreboard... params) {
             if (binder == null)
                 return null;
+
             try {
                 maxScore = binder.getMaxScore(params[0]);
                 return binder.getScores(params[0]);
@@ -353,6 +359,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
         contestantAdapter = new ContestantAdapter(this);
         scoreboardAdapter = new ScoreboardAdapter(this);
 
+        mContext = this.getApplicationContext();
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_action_bar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

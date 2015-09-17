@@ -1,8 +1,12 @@
 package io.github.cms_dev.cmsscoreboard;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 
@@ -19,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.json.Json;
@@ -32,6 +37,9 @@ public class ScoreboardUpdater implements Runnable {
     private HashMap<String, ContestantInformation> contestants = new HashMap<>();
     private boolean terminating;
     private ScoreboardStatus status;
+    private HashMap<String,Integer> scorePrima = new HashMap<>() ;
+    private Scoreboard scoreboard ;
+    private boolean startFlag = false ;
 
     private class EventReceiver {
         private HttpURLConnection connection;
@@ -87,6 +95,8 @@ public class ScoreboardUpdater implements Runnable {
             eventName = "message";
             return ret;
         }
+
+        public HashMap<String, TaskInformation> getTask(){ return tasks ; }
 
         public void receiveEvents() {
             if (connection == null) return;
@@ -149,6 +159,7 @@ public class ScoreboardUpdater implements Runnable {
 
     public ScoreboardUpdater(Context context, Scoreboard source) {
         ctx = context;
+        scoreboard = source ;
         if (source.URL.endsWith("Ranking.html"))
             src = source.URL.substring(0, source.URL.length() - 12);
         else
@@ -216,6 +227,7 @@ public class ScoreboardUpdater implements Runnable {
         JsonObject tasksData;
         JsonObject usersData;
         JsonObject scoresData;
+     //   Log.d("MAINTAIN_BOARD","DEBUG 1");
         try {
             tasksData = downloadJson(src + "tasks/");
             usersData = downloadJson(src + "users/");
@@ -233,15 +245,25 @@ public class ScoreboardUpdater implements Runnable {
             status = ScoreboardStatus.INVALID_URL;
             return;
         }
+       // Log.d("MAINTAIN_BOARD","DEBUG 2");
         try {
-            for (String task: tasksData.keySet()) {
-                tasks.put(task, new TaskInformation(tasksData.getJsonObject(task)));
-            }
             for (String user: usersData.keySet()) {
-                this.contestants.put(user, new ContestantInformation(user, usersData.getJsonObject(user)));
+                if( !this.contestants.containsKey(user) ) {
+                    ContestantInformation att = new ContestantInformation(user, usersData.getJsonObject(user));
+                    att.scoreboard = scoreboard;
+                    this.contestants.put(user, att);
+                }
             }
+            scoreboard.task = new HashSet<>();
+            for (String task: tasksData.keySet()) {
+                TaskInformation att = new TaskInformation(tasksData.getJsonObject(task));
+                scoreboard.addTask(att);
+                tasks.put(task, att);
+            }
+
             for (String user: scoresData.keySet()) {
                 JsonObject user_scores = scoresData.getJsonObject(user);
+                int scorePrima = this.contestants.get(user).getTotalScore().intValue() ;
                 for (String task: user_scores.keySet()) {
                     if (tasks.containsKey(task)) {
                         updateScore(user, task, user_scores.getJsonNumber(task).doubleValue());
@@ -251,14 +273,36 @@ public class ScoreboardUpdater implements Runnable {
                         return;
                     }
                 }
+                int scoreDopo = this.contestants.get(user).getTotalScore().intValue() ;
+
+                if( scorePrima != scoreDopo ) Log.d("ScoreUpd",user + "["+scorePrima+","+scoreDopo+"] FLAG["+startFlag+"]" );
+
+                if( scoreDopo != scorePrima && ScoreboardActivity.mContext != null && startFlag)
+                {
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ScoreboardActivity.mContext);
+                    mBuilder.setSmallIcon(R.drawable.cms_big);
+                    mBuilder.setLargeIcon(BitmapFactory.decodeResource(ScoreboardActivity.mContext.getResources(),
+                            R.drawable.cms_big));
+                    mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+                    mBuilder.setContentTitle("Aggiornamento contestant preferiti");
+                    mBuilder.setContentText(user + " è passato da " + scorePrima + " a " + scoreDopo + " punti!");
+
+                    NotificationManager mNotificationManager = (NotificationManager) ScoreboardActivity.mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(15, mBuilder.build());
+                }
             }
+
+            startFlag = true ;
+
         } catch (NullPointerException|ClassCastException e) {
             status = ScoreboardStatus.INVALID_DATA;
             Log.v("SseEvent", "Invalid data!");
             return;
         }
+       // Log.d("MAINTAIN_BOARD","DEBUG 3");
         status = ScoreboardStatus.CONNECTED;
-        try {
+        /*try {
             EventReceiver eventSource = new EventReceiver(src + "events");
             eventSource.receiveEvents();
         } catch (Exception e) {
@@ -266,7 +310,8 @@ public class ScoreboardUpdater implements Runnable {
             e.printStackTrace(new PrintWriter(sw));
             Log.v("exception in thread", sw.toString());
             Log.v("EventReceiver", "Could not start EventReceiver!");
-        }
+        }*/
+        //Log.d("MAINTAIN_BOARD","DEBUG 4");
     }
 
     @Override
@@ -275,7 +320,7 @@ public class ScoreboardUpdater implements Runnable {
             while (!terminating) {
                 maintainBoard();
                 try {
-                    Thread.sleep(120000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     break;
                 }

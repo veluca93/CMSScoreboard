@@ -12,6 +12,8 @@ public class ContestantInformation implements Comparable<ContestantInformation> 
     public String lastName;
     public String username;
     public String team;
+    public String score ;
+    public Scoreboard scoreboard;
 
     public ContestantInformation(String username, JsonObject user_info) {
         this.username = username;

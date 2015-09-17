@@ -23,6 +23,7 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
                 if (!scoreboards.containsKey(scoreboard)) {
                     ScoreboardUpdater updater = new ScoreboardUpdater(this, scoreboard);
                     scoreboards.put(scoreboard, updater);
+                    Log.d("ScoreBoardService","START THREAD "+scoreboard.URL);
                     new Thread(updater).start();
                 }
             }
@@ -73,6 +74,7 @@ public class ScoreboardService extends Service implements SharedPreferences.OnSh
     @Override
     public void onCreate() {
         scoreboardManager = new ScoreboardManager(this);
+        Log.d("ONCREATE","SCOREBOARD START");
         startUpdaters();
         scoreboardManager.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
