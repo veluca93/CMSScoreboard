@@ -64,7 +64,7 @@
             android:gravity="top"
             android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
             android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:minHeight="100dp"
             android:layout_alignParentLeft="true"
             >
             <LinearLayout

@@ -2,10 +2,12 @@ package io.github.cms_dev.cmsscoreboard;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,9 +39,9 @@ public class ScoreboardUpdater implements Runnable {
     private HashMap<String, ContestantInformation> contestants = new HashMap<>();
     private boolean terminating;
     private ScoreboardStatus status;
-    private HashMap<String,Integer> scorePrima = new HashMap<>() ;
     private Scoreboard scoreboard ;
     private boolean startFlag = false ;
+    private static int notifyId = 0 ;
 
     private class EventReceiver {
         private HttpURLConnection connection;
@@ -275,21 +277,20 @@ public class ScoreboardUpdater implements Runnable {
                 }
                 int scoreDopo = this.contestants.get(user).getTotalScore().intValue() ;
 
-                if( scorePrima != scoreDopo ) Log.d("ScoreUpd",user + "["+scorePrima+","+scoreDopo+"] FLAG["+startFlag+"]" );
+                SharedPreferences pref = ScoreboardActivity.mSharedPreferences ;
+                if( pref != null && pref.contains(contestants.get(user).getFullName()) && pref.getString(contestants.get(user).getFullName(), null).equals("OK") ) {
+                    if (scoreDopo != scorePrima && ScoreboardActivity.mContext != null && startFlag) {
+                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ScoreboardActivity.mContext);
+                        mBuilder.setSmallIcon(R.drawable.cms_big);
+                        mBuilder.setLargeIcon(BitmapFactory.decodeResource(ScoreboardActivity.mContext.getResources(), R.drawable.cms_big));
+                        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-                if( scoreDopo != scorePrima && ScoreboardActivity.mContext != null && startFlag)
-                {
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ScoreboardActivity.mContext);
-                    mBuilder.setSmallIcon(R.drawable.cms_big);
-                    mBuilder.setLargeIcon(BitmapFactory.decodeResource(ScoreboardActivity.mContext.getResources(),
-                            R.drawable.cms_big));
-                    mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-                    mBuilder.setContentTitle("Aggiornamento contestant preferiti");
-                    mBuilder.setContentText(user + " è passato da " + scorePrima + " a " + scoreDopo + " punti!");
-
-                    NotificationManager mNotificationManager = (NotificationManager) ScoreboardActivity.mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(15, mBuilder.build());
+                        mBuilder.setContentTitle("Aggiornamento contestant preferiti");
+                        mBuilder.setContentText(contestants.get(user).getFullName() + " +" + (scoreDopo-scorePrima) + " ("+contestants.get(user).getTotalScore().intValue()+"points)");
+                        NotificationManager mNotificationManager = (NotificationManager) ScoreboardActivity.mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(notifyId++,mBuilder.build());
+                        //TODO: Aprire l'app al click
+                    }
                 }
             }
 
@@ -302,6 +303,7 @@ public class ScoreboardUpdater implements Runnable {
         }
        // Log.d("MAINTAIN_BOARD","DEBUG 3");
         status = ScoreboardStatus.CONNECTED;
+        //TODO: supportare le notifiche attivando l'eventreceiver
         /*try {
             EventReceiver eventSource = new EventReceiver(src + "events");
             eventSource.receiveEvents();
@@ -318,6 +320,7 @@ public class ScoreboardUpdater implements Runnable {
     public void run() {
         try {
             while (!terminating) {
+
                 maintainBoard();
                 try {
                     Thread.sleep(5000);

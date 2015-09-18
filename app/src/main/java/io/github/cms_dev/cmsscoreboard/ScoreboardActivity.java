@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -71,6 +72,9 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
     public HashMap<String,Boolean> mContestantOpen = new HashMap<>();
     public HashSet<String> mContestantFavouriteList = new HashSet<String>();
     public static Context mContext = null ;
+    public static SharedPreferences mSharedPreferences = null ;
+    public static ImageCache imageCache = null ;
+
     private class ContestantAdapter extends ArrayAdapter<ContestantInformation> {
 
 
@@ -89,6 +93,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             LinearLayout info = (LinearLayout) convertView.findViewById(R.id.contestant_info);
             ImageView star = (ImageView) convertView.findViewById(R.id.contestant_star);
             ImageView flag = (ImageView) convertView.findViewById(R.id.contestant_flag);
+            ImageView face = (ImageView) convertView.findViewById(R.id.contestant_photo);
 
             rank.setText( (1+position)+" " );
             name.setText(contestantName);
@@ -112,19 +117,48 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             taskN.addView(nameTask);
             taskS.addView(scoreTask);
 
-            for ( TaskInformation taskKey : scoreboardData.get(position).scoreboard.task )
-            {
-                nameTask = new TextView(this.getContext());
-                scoreTask = new TextView(this.getContext());
-                double scoreD = scoreboardData.get(position).getScore(taskKey.short_name) ;
-                nameTask.setText(taskKey.short_name);
-                scoreTask.setText((Integer.valueOf((int) Math.round(scoreD))).toString());
-                taskN.addView(nameTask);
-                taskS.addView(scoreTask);
-            }
+            String url = scoreboardData.get(position).scoreboard.URL ;
+            while( !url.endsWith("/") ) url = url.substring(0,url.length()-1);
+            //TODO: usare last index of
 
-            //if( ScoreboardActivity.this.getPreferences(Context.MODE_PRIVATE).getString(contestantName, "DEFAULT") )
-            if( PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).contains(contestantName) && PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).getString(contestantName, null).equals("OK") ){
+            url = url + "faces/" + scoreboardData.get(position).username ;
+            if( imageCache != null ) {
+                imageCache.addImage(url);
+                BitmapDrawable faccia = imageCache.getImage(url);
+                if (faccia != null) {
+                    face.setImageDrawable(faccia);
+                }
+                else face.setImageResource(R.drawable.no_photo);
+            }
+            else face.setImageResource(R.drawable.no_photo);
+
+            url = scoreboardData.get(position).scoreboard.URL ;
+            while( !url.endsWith("/") ) url = url.substring(0,url.length()-1);
+            url = url + "flags/" + scoreboardData.get(position).team ;
+            if( imageCache != null ) {
+                imageCache.addImage(url);
+             //   Log.d("Flags",url)
+                BitmapDrawable bandiera = imageCache.getImage(url);
+                if (bandiera != null) {
+                    flag.setImageDrawable(bandiera);
+                }
+            }
+            //TODO: Ordinare i task
+            if( scoreboardData.get(position).scoreboard != null  )
+                for ( TaskInformation taskKey : scoreboardData.get(position).scoreboard.task )
+                {
+                    nameTask = new TextView(this.getContext());
+                    scoreTask = new TextView(this.getContext());
+                    double scoreD = scoreboardData.get(position).getScore(taskKey.short_name) ;
+                    nameTask.setText(taskKey.short_name);
+                    scoreTask.setText((Integer.valueOf((int) Math.round(scoreD))).toString());
+                    taskN.addView(nameTask);
+                    taskS.addView(scoreTask);
+                }
+
+            mSharedPreferences = getApplicationContext().getSharedPreferences("FAVORITI", mContext.MODE_PRIVATE);
+
+            if( mSharedPreferences.contains(contestantName) && mSharedPreferences.getString(contestantName, null).equals("OK") ){
                 star.setImageResource(R.drawable.ic_star_black_48dp);
             } else {
                 star.setImageResource(R.drawable.ic_star_border_black_48dp);
@@ -152,7 +186,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                     TextView name = (TextView) ( (LinearLayout)view.getParent()).findViewById(R.id.contestant_name);
 
                     String res = "OK" ;
-                    if( !PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).contains(name.getText().toString()) || !PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).getString(contestantName, null).equals("OK") ){
+                    if( !mSharedPreferences.contains(name.getText().toString()) || !mSharedPreferences.getString(contestantName, null).equals("OK") ){
                         mContestantFavouriteList.add(name.getText().toString());
                        viewImg.setImageResource(R.drawable.ic_star_black_48dp);
                     }
@@ -161,8 +195,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                         mContestantFavouriteList.remove( name.getText().toString() );
                         viewImg.setImageResource(R.drawable.ic_star_border_black_48dp);
                     }
-                    PreferenceManager.getDefaultSharedPreferences(ScoreboardActivity.this.getBaseContext()).edit().putString(name.getText().toString(), res).commit();
-
+                    mSharedPreferences.edit().putString(name.getText().toString(), res).commit();
 
                 }
             });
@@ -358,6 +391,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
 
         contestantAdapter = new ContestantAdapter(this);
         scoreboardAdapter = new ScoreboardAdapter(this);
+        imageCache = new ImageCache();
 
         mContext = this.getApplicationContext();
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_action_bar);
@@ -407,6 +441,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 scoreboardManager.setCurrentScoreboard((Scoreboard) mScoreboardList.getItemAtPosition(position));
                 scoreboardManager.apply();
+                mDrawerLayout.closeDrawers();
             }
         });
 
@@ -444,6 +479,7 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
 
         Intent intent = new Intent(this, ScoreboardService.class);
         bindService(intent, this, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
