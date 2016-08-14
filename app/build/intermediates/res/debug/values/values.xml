@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string-array name="drawer_extra">
         <item>Add scoreboard</item>
@@ -9,7 +9,7 @@
         <item>Delete scoreboard</item>
         <item>Switch to scoreboard</item>
     </string-array>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -40,10 +40,10 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/colors.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="cms_color">#1AABFF</color>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
@@ -163,11 +163,11 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
     <item name="dialog_fixed_height_minor" type="dimen">100%</item>
@@ -210,7 +210,7 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="add">Add</string>
@@ -233,15 +233,15 @@
     <string name="scoreboard_message_no_scoreboards">No scoreboards found.</string>
     <string name="scoreboard_message_non_existent">This scoreboard does not exist!</string>
     <string name="scoreboard_source_options_title">Scoreboard options</string>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="title_activity_scoreboard">Scoreboard</string>
     <string name="title_add_scoreboard">Add scoreboard</string>
     <string name="url_hint">URL</string>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
@@ -1391,25 +1391,25 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/themes-xml.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/themes-xml.xml -->
     <eat-comment/>
     <style name="Theme.CMSTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <style name="ThemeOverlay.AppCompat" parent="Base.ThemeOverlay.AppCompat"/>
     <style name="ThemeOverlay.AppCompat.ActionBar" parent="Base.ThemeOverlay.AppCompat.ActionBar"/>
     <style name="ThemeOverlay.AppCompat.Dark" parent="Base.ThemeOverlay.AppCompat.Dark"/>
     <style name="ThemeOverlay.AppCompat.Dark.ActionBar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="ThemeOverlay.AppCompat.Light" parent="Base.ThemeOverlay.AppCompat.Light"/>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values/themes-xml.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values/themes-xml.xml -->
     <eat-comment/>
     <style name="ToolBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
     </style>

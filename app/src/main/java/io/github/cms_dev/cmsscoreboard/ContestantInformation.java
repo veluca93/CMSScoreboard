@@ -13,6 +13,8 @@ public class ContestantInformation implements Comparable<ContestantInformation> 
     public String username;
     public String team ;
     public String score ;
+    public String id ;
+
     public Scoreboard scoreboard;
     public ContestantInformation(String username, JsonObject user_info) {
         this.username = username;
@@ -21,6 +23,10 @@ public class ContestantInformation implements Comparable<ContestantInformation> 
         lastName = user_info.getString("l_name");
         if (!user_info.isNull("team")) {
             team = user_info.getString("team");
+        }
+        if(!user_info.isNull("_id"))
+        {
+            id = user_info.getString("_id");
         }
     }
 

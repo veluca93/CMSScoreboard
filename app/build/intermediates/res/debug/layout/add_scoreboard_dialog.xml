@@ -17,4 +17,4 @@
         android:layout_height="wrap_content"
         android:hint="@string/name_hint"
         android:inputType="text"/>
-</LinearLayout><!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/layout/add_scoreboard_dialog.xml -->
+</LinearLayout><!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/layout/add_scoreboard_dialog.xml -->

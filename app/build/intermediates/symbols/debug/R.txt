@@ -417,7 +417,8 @@ int drawable ic_star_black_48dp 0x7f02003d
 int drawable ic_star_border_black_48dp 0x7f02003e
 int drawable ita 0x7f02003f
 int drawable no_photo 0x7f020040
-int drawable notification_template_icon_bg 0x7f020041
+int drawable noflag 0x7f020041
+int drawable notification_template_icon_bg 0x7f020042
 int id action0 0x7f0d005a
 int id action_bar 0x7f0d0040
 int id action_bar_activity_content 0x7f0d0000

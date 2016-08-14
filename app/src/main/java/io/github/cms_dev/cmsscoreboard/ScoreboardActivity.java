@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 public class ScoreboardActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, ServiceConnection {
     private ActionBarDrawerToggle mDrawerToggle;
@@ -117,24 +118,38 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
             taskN.addView(nameTask);
             taskS.addView(scoreTask);
 
+            String baseUrl = scoreboardData.get(position).scoreboard.URL ;
+            while( !baseUrl.endsWith("/") ) baseUrl = baseUrl.substring(0,baseUrl.length()-1);
+            String commonExt[] = {"png","jpg","jpeg"};
             String url = scoreboardData.get(position).scoreboard.URL ;
             while( !url.endsWith("/") ) url = url.substring(0,url.length()-1);
             //TODO: usare last index of
 
-            url = url + "faces/" + scoreboardData.get(position).username ;
-            if( imageCache != null ) {
-                imageCache.addImage(url);
-                BitmapDrawable faccia = imageCache.getImage(url);
-                if (faccia != null) {
-                    face.setImageDrawable(faccia);
+            // Tentativi per recuperare la foto
+            String urlAttempts[] = new String[2] ;
+            urlAttempts[0] = "faces/" + scoreboardData.get(position).username ;
+            urlAttempts[1] = "faces/" + scoreboardData.get(position).id ;
+            BitmapDrawable facePic = null ;
+
+            for( int i = 0 ; i < urlAttempts.length && facePic == null ; i++ )
+            {
+                for( int j = 0 ; j < commonExt.length && facePic == null ; j++ )
+                {
+                    url = baseUrl + urlAttempts[i] + "." + commonExt[j] ;
+                    imageCache.addImage(url);
+                    BitmapDrawable faccia = imageCache.getImage(url);
+                    if (faccia != null) {
+                        facePic = faccia ;
+                    }
                 }
-                else face.setImageResource(R.drawable.no_photo);
             }
+            if( facePic != null ) face.setImageDrawable(facePic);
             else face.setImageResource(R.drawable.no_photo);
 
+            // Tentativi per la bandiera
             url = scoreboardData.get(position).scoreboard.URL ;
             while( !url.endsWith("/") ) url = url.substring(0,url.length()-1);
-            url = url + "flags/" + scoreboardData.get(position).team ;
+            url = url + "flags/" + scoreboardData.get(position).team + ".png" ;
             if( imageCache != null ) {
                 imageCache.addImage(url);
              //   Log.d("Flags",url)
@@ -142,20 +157,31 @@ public class ScoreboardActivity extends AppCompatActivity implements SharedPrefe
                 if (bandiera != null) {
                     flag.setImageDrawable(bandiera);
                 }
+                else flag.setImageResource(R.drawable.noflag);
             }
-            //TODO: Ordinare i task
-            if( scoreboardData.get(position).scoreboard != null  )
-                for ( TaskInformation taskKey : scoreboardData.get(position).scoreboard.task )
+            else flag.setImageResource(R.drawable.noflag);
+
+
+            // Aggiungo le righe dei task / punteggi
+            if( scoreboardData.get(position).scoreboard != null  ) {
+                Vector<String> shortTaskName = new Vector<String>();
+
+                for (TaskInformation taskKey : scoreboardData.get(position).scoreboard.task)
+                    shortTaskName.add(taskKey.short_name);
+                Collections.sort(shortTaskName);
+
+                for( int i = 0 ; i < shortTaskName.size(); i++ )
                 {
                     nameTask = new TextView(this.getContext());
                     scoreTask = new TextView(this.getContext());
-                    double scoreD = scoreboardData.get(position).getScore(taskKey.short_name) ;
-                    nameTask.setText(taskKey.short_name);
+                    double scoreD = scoreboardData.get(position).getScore(shortTaskName.get(i));
+                    nameTask.setText(shortTaskName.get(i));
                     scoreTask.setText((Integer.valueOf((int) Math.round(scoreD))).toString());
                     taskN.addView(nameTask);
                     taskS.addView(scoreTask);
                 }
 
+            }
             mSharedPreferences = getApplicationContext().getSharedPreferences("FAVORITI", mContext.MODE_PRIVATE);
 
             if( mSharedPreferences.contains(contestantName) && mSharedPreferences.getString(contestantName, null).equals("OK") ){

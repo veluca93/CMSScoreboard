@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
     <eat-comment/>
     <string-array name="drawer_extra">
         <item>Aggiungi classifica</item>
@@ -9,7 +9,7 @@
         <item>Elimina classifica</item>
         <item>Passa a questa classifica</item>
     </string-array>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values-it/values-it.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values-it/values-it.xml -->
     <eat-comment/>
     <string msgid="4600421777120114993" name="abc_action_bar_home_description">"Vai alla home page"</string>
     <string msgid="1594238315039666878" name="abc_action_bar_up_description">"Vai in alto"</string>
@@ -24,7 +24,7 @@
     <string msgid="893419373245838918" name="abc_searchview_description_voice">"Ricerca vocale"</string>
     <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"Condividi con"</string>
     <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"Condividi con %s"</string>
-    <!-- From: file:/home/gaspare/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values-it/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Impostazioni</string>
     <string name="add">Add</string>

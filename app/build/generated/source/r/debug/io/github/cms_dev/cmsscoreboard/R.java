@@ -1534,7 +1534,8 @@ containing a value of this type.
         public static final int ic_star_border_black_48dp=0x7f02003e;
         public static final int ita=0x7f02003f;
         public static final int no_photo=0x7f020040;
-        public static final int notification_template_icon_bg=0x7f020041;
+        public static final int noflag=0x7f020041;
+        public static final int notification_template_icon_bg=0x7f020042;
     }
     public static final class id {
         public static final int action0=0x7f0d005a;
