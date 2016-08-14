@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/values-en/strings.xml -->
+    <!-- From: file:/C:/Users/Gaspare/androidStudio/CMSScoreboard/app/src/main/res/values-en/strings.xml -->
     <eat-comment/>
     <string-array name="drawer_extra">
         <item>Add scoreboard</item>
@@ -28,7 +28,7 @@
     <string name="scoreboard_message_no_scoreboards">No scoreboards found.</string>
     <string name="scoreboard_message_non_existent">This scoreboard does not exist!</string>
     <string name="scoreboard_source_options_title">Scoreboard options</string>
-    <string name="title_activity_scoreboard">Scoreboard</string>
+    <string name="title_activity_scoreboard">CMS Scoreboard</string>
     <string name="title_add_scoreboard">Add scoreboard</string>
     <string name="url_hint">URL</string>
 </resources>

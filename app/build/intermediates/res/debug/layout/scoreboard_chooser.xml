@@ -7,4 +7,4 @@
     android:gravity="center_vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall" /><!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/layout/scoreboard_chooser.xml -->
+    android:minHeight="?android:attr/listPreferredItemHeightSmall" /><!-- From: file:/C:/Users/Gaspare/androidStudio/CMSScoreboard/app/src/main/res/layout/scoreboard_chooser.xml -->

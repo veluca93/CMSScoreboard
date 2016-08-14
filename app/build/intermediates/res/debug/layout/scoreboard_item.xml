@@ -8,54 +8,53 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:gravity="center_vertical"
                 android:id="@+id/contestant_star"
-                android:minHeight="?android:attr/listPreferredItemHeightSmall"
                 android:src="@drawable/ic_star_border_black_48dp" />
             <ImageView
-                android:layout_width="25dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:gravity="center_vertical"
                 android:id="@+id/contestant_flag"
-                android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:src="@drawable/noflag" />
+                android:src="@drawable/noflag"
+                android:layout_gravity="center" />
             <TextView
                 android:id="@+id/contestant_rank"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:gravity="center_vertical"
                 android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
                 android:minHeight="?android:attr/listPreferredItemHeightSmall" />
             <TextView
                 android:id="@+id/contestant_name"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:maxLength="18"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:gravity="center_vertical"
                 android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
                 android:paddingRight="?android:attr/listPreferredItemPaddingRight"
                 android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:layout_alignParentLeft="true"/>
+                android:layout_alignParentLeft="true"
+                android:layout_weight="65" />
             <TextView
                 android:id="@+id/contestant_score"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:paddingRight="?android:attr/listPreferredItemPaddingRight"
                 android:gravity="right|center_vertical"
                 android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +68,8 @@
             android:paddingRight="?android:attr/listPreferredItemPaddingRight"
             android:minHeight="100dp"
             android:layout_alignParentLeft="true"
-            >
+            android:padding="?android:attr/listPreferredItemPaddingLeft"
+            android:paddingTop="?android:attr/listPreferredItemPaddingLeft">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -118,4 +118,4 @@
     </LinearLayout>
 
 
-</RelativeLayout><!-- From: file:/C:/Users/Gaspare/android%20Studio/CMSScoreboard/app/src/main/res/layout/scoreboard_item.xml -->
+</RelativeLayout><!-- From: file:/C:/Users/Gaspare/androidStudio/CMSScoreboard/app/src/main/res/layout/scoreboard_item.xml -->

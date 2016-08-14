@@ -1,4 +1,4 @@
-package io.github.cms_dev.cwsscoreboard;
+package io.github.cms_dev.cmsscoreboard;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

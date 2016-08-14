@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Classifica CMS</string>
-    <string name="title_activity_scoreboard">Classifica</string>
+    <string name="title_activity_scoreboard">Classifica CMS</string>
     <string name="action_settings">Impostazioni</string>
     <string-array name="drawer_extra">
         <item>Aggiungi classifica</item>
